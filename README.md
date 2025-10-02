@@ -14,10 +14,10 @@
 
 ## Meeting Functional Requirements
 
--   Add item: Input field + Add button; trims whitespace; ignores blank input with a Toast.<br><img src="Screenshots/BlankInput.png" alt="Alt Text" style="width:50%; height:auto;">
--   Active items: Label + Checkbox; toggling moves to Completed; delete available on each row.<br><img src="Screenshots/AddItem.png" alt="Alt Text" style="width:50%; height:auto;">
--   Completed items: Same row layout; unchecking moves back to Active; delete works here too.<br><img src="Screenshots/AddItem2.png" alt="Alt Text" style="width:50%; height:auto;">
--   Sections & empty states: “Items” and “Completed Items” only when non-empty; “No items yet” when the whole list is empty.<br><img src="Screenshots/NoItem.png" alt="Alt Text" style="width:50%; height:auto;">
+-   Add item: Input field + Add button; trims whitespace; ignores blank input with a Toast.<br><img src="Screenshots/BlankInput.png" alt="Alt Text" style="width:30%; height:auto;">
+-   Active items: Label + Checkbox; toggling moves to Completed; delete available on each row.<br><img src="Screenshots/AddItem.png" alt="Alt Text" style="width:30%; height:auto;">
+-   Completed items: Same row layout; unchecking moves back to Active.<br><img src="Screenshots/AddItem2.png" alt="Alt Text" style="width:30%; height:auto;">
+-   Sections & empty states: “Items” and “Completed Items” only when non-empty; “No items yet” when the whole list is empty.<br><img src="Screenshots/NoItem.png" alt="Alt Text" style="width:30%; height:auto;">
 -   Persistence (session): `ViewModel` for list state + `rememberSaveable` for the input field to survive simple config changes.<br><img src="Screenshots/Rotation.png" alt="Alt Text" style="width:auto; height:auto;">
 
 ## Concepts Used (mapped to Learning Objectives)
@@ -29,17 +29,15 @@
     - Each task’s `checked` uses `mutableStateOf`.
     - The input field uses `rememberSaveable`.
 3. State hoisting (stateless UI + events from parents)
-
--   `TodoTaskItem` is stateless: it receives `checked` and event lambdas (`onCheckedChange`, `onClose`).
--   `TodoTaskList` receives the list and callbacks, forwarding them to each item.
--   `TodoListScreen` wires events to the `ViewModel` (`add`, `remove`, `toggle`).
-
+   - `TodoTaskItem` is stateless: it receives `checked` and event lambdas (`onCheckedChange`, `onClose`).
+   - `TodoTaskList` receives the list and callbacks, forwarding them to each item.
+   - `TodoListScreen` wires events to the `ViewModel` (`add`, `remove`, `toggle`).
 4. Compose layout with Row/Column, TextField, Button, Checkbox, IconButton
     - Top bar uses `Row` with `OutlinedTextField` and `Button`.
     - Each item row shows `Text`, `Checkbox`, and a `IconButton` (close).
 5. Understand recomposition
     - Items are rendered in a `LazyColumn` with stable keys (`id`) to avoid unnecessary recompositions as the list updates.
-6. Clean, testable Kotlin with clear unidirectional data flow
+6. Unidirectional data flow
     - State down: ViewModel.tasks -> TodoListScreen -> TodoTaskList -> TodoTaskItem.
     - Events up: TodoTaskItem -> TodoTaskList -> TodoListScreen -> ViewModel (add, remove, changeTaskChecked).
 
@@ -58,7 +56,7 @@ app/
     ├── MainActivity.kt        # Sets content/theme; shows TodoListScreen
     ├── TodoListScreen.kt      # Top screen: input + list; shows Toast for blank input
     ├── TodoViewModel.kt       # State owner: add/remove/toggle; trims input
-    ├── TodoTask.kt            # Data model with observable 'checked'
+    ├── TodoTask.kt            # Data class with observable 'checked'
     ├── TodoTaskList.kt        # LazyColumn; sections + empty state; stable keys
     └── TodoTaskItem.kt        # Stateless row: label, checkbox, delete
 ```
