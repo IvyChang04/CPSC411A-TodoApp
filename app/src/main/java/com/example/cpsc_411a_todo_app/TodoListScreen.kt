@@ -1,5 +1,6 @@
 package com.example.cpsc_411a_todo_app
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +17,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,6 +47,7 @@ fun TodoListScreen(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            val context = LocalContext.current
             OutlinedTextField(
                 modifier = Modifier
                     .weight(1f)
@@ -55,9 +58,13 @@ fun TodoListScreen(
                 singleLine = true,
             )
             Button(
-                enabled = inputText.isNotBlank(),
                 onClick = {
-                    todoViewModel.add(inputText)
+                    if (inputText.trim() == ""){
+                        Toast.makeText(context, "Blank input", Toast.LENGTH_SHORT).show()
+                    }
+                    else{
+                        todoViewModel.add(inputText)
+                    }
                     inputText = ""
                 }
             ) {

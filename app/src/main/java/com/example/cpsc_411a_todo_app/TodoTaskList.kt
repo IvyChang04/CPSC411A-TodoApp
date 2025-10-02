@@ -1,6 +1,5 @@
 package com.example.cpsc_411a_todo_app
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -20,43 +19,43 @@ fun TodoTaskList(
     modifier: Modifier = Modifier
 ) {
     val (checkedTasks, uncheckedTasks) = list.partition { it.checked }
-    Column (
+    LazyColumn(
         modifier = modifier
     ) {
-        LazyColumn(
-            modifier = modifier
-        ) {
-            if(uncheckedTasks.isNotEmpty()){
-                item { SectionTitle("Items") }
-                items(
-                    items = uncheckedTasks,
-                    key = { task -> "unchecked-${task.id}" }
-                ) { task ->
-                    TodoTaskItem(
-                        taskName = task.label,
-                        checked = task.checked,
-                        onCheckedChange = { checked -> onCheckedTask(task, checked) },
-                        onClose = { onCloseTask(task) }
-                    )
-                }
+        if(list.isEmpty()){
+            item { SectionTitle("No items yet") }
+        }
+        if(uncheckedTasks.isNotEmpty()){
+            item { SectionTitle("Items") }
+            items(
+                items = uncheckedTasks,
+                key = { it.id }
+            ) { task ->
+                TodoTaskItem(
+                    taskName = task.label,
+                    checked = task.checked,
+                    onCheckedChange = { checked -> onCheckedTask(task, checked) },
+                    onClose = { onCloseTask(task) }
+                )
             }
-            if(checkedTasks.isNotEmpty()){
-                item { SectionTitle("Completed Items") }
-                items(
-                    items = checkedTasks,
-                    key = { task -> "checked-${task.id}" }
-                ) { task ->
-                    TodoTaskItem(
-                        taskName = task.label,
-                        checked = task.checked,
-                        onCheckedChange = { checked -> onCheckedTask(task, checked) },
-                        onClose = { onCloseTask(task) }
-                    )
-                }
+        }
+        if(checkedTasks.isNotEmpty()){
+            item { SectionTitle("Completed Items") }
+            items(
+                items = checkedTasks,
+                key = { it.id }
+            ) { task ->
+                TodoTaskItem(
+                    taskName = task.label,
+                    checked = task.checked,
+                    onCheckedChange = { checked -> onCheckedTask(task, checked) },
+                    onClose = { onCloseTask(task) }
+                )
             }
         }
     }
 }
+
 @Composable
 private fun SectionTitle(text: String) {
     Text(
