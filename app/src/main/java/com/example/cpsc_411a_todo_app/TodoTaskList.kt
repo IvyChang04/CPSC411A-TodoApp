@@ -23,51 +23,47 @@ fun TodoTaskList(
     Column (
         modifier = modifier
     ) {
-        Text(
-            text = "Items",
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp,
-            modifier = Modifier
-                .padding(top = 16.dp, start = 8.dp)
-        )
         LazyColumn(
-            modifier = Modifier
+            modifier = modifier
         ) {
-            items(
-                items = uncheckedTasks,
-                key = { task -> "unchecked-${task.id}" }
-            ) { task ->
-                TodoTaskItem(
-                    taskName = task.label,
-                    checked = task.checked,
-                    onCheckedChange = { checked -> onCheckedTask(task, checked) },
-                    onClose = { onCloseTask(task) }
-                )
+            if(uncheckedTasks.isNotEmpty()){
+                item { SectionTitle("Items") }
+                items(
+                    items = uncheckedTasks,
+                    key = { task -> "unchecked-${task.id}" }
+                ) { task ->
+                    TodoTaskItem(
+                        taskName = task.label,
+                        checked = task.checked,
+                        onCheckedChange = { checked -> onCheckedTask(task, checked) },
+                        onClose = { onCloseTask(task) }
+                    )
+                }
             }
-        }
-
-        Text(
-            text = "Completed Items",
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp,
-            modifier = Modifier
-                .padding(top = 16.dp, start = 8.dp)
-        )
-        LazyColumn(
-            modifier = Modifier
-        ) {
-            items(
-                items = checkedTasks,
-                key = { task -> "checked-${task.id}" }
-            ) { task ->
-                TodoTaskItem(
-                    taskName = task.label,
-                    checked = task.checked,
-                    onCheckedChange = { checked -> onCheckedTask(task, checked) },
-                    onClose = { onCloseTask(task) }
-                )
+            if(checkedTasks.isNotEmpty()){
+                item { SectionTitle("Completed Items") }
+                items(
+                    items = checkedTasks,
+                    key = { task -> "checked-${task.id}" }
+                ) { task ->
+                    TodoTaskItem(
+                        taskName = task.label,
+                        checked = task.checked,
+                        onCheckedChange = { checked -> onCheckedTask(task, checked) },
+                        onClose = { onCloseTask(task) }
+                    )
+                }
             }
         }
     }
-
+}
+@Composable
+private fun SectionTitle(text: String) {
+    Text(
+        text = text,
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp,
+        modifier = Modifier
+            .padding(top = 16.dp, start = 8.dp)
+    )
 }
